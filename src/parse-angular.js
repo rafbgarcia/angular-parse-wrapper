@@ -4,7 +4,121 @@
 
 	if (angular !== undef) {
 
-		var module = angular.module('parse-angular', []);
+		var module = angular.module('wrapParse', []);
+
+		module.factory('wrapParse', function () {
+			var conversion, wrapParse;
+
+		  conversion = {
+		    'Number': function(value) {
+		      return Number(value);
+		    },
+		    'Boolean': function(value) {
+		      if(typeof value === 'boolean')
+		        return value;
+		      return Boolean(Number(value));
+		    },
+		    'Date': function(value) {
+		      if(value instanceof Date) {
+		        var newDate = new Date(value.valueOf() + value.getTimezoneOffset() * 60000);
+		        newDate.setSeconds(0);
+		        newDate.setMinutes(0);
+		        newDate.setHours(0);
+		        return newDate;
+		      }
+		      return moment(value, wrapParse.dateFormat).toDate();
+		    },
+		    'Relation': function(value, fieldType) {
+		      if(value instanceof fieldType)
+		        return value;
+		      return new fieldType({id: value});
+		    }
+		  };
+
+		  wrapParse = function(modelName, cols) {
+		    // Parse.Object
+		    var obj;
+		    if(modelName === Parse.User)
+		      obj = modelName;
+		    else
+		      obj = Parse.Object.extend(modelName);
+
+
+		    // Define properties
+		    _.forOwn(cols, function(fieldType, fieldName) {
+		      Object.defineProperty(obj.prototype, fieldName, {
+		        enumerable: true,
+		        configurable: false,
+		        get: function() {
+		          var value = this.get(fieldName);
+		          if(value !== undefined && fieldType.name === 'Boolean')
+		            return conversion['Boolean'](value);
+		          return value;
+		        },
+		        set: function(value) {
+		          this.set(fieldName, value);
+		        }
+		      });
+		    });
+
+		    obj = _.extend(obj, {
+		      _name: 'Relation',
+		      query: function() {
+		        return new Parse.Query(obj);
+		      },
+		      find: function(onSuccess, onError) {
+		        obj.query().find(onSuccess, onError);
+		        return this;
+		      },
+		      get: function (id, onSuccess, onError) {
+		        obj.query().get(id, onSuccess, onError);
+		        return this;
+		      }
+		    });
+
+		    var originalSave = Parse.Object.prototype.save;
+		    Parse.Object.prototype = _.extend(Parse.Object.prototype, {
+		    	save: function (data, onSuccess, onError) {
+		    		if(typeof data === 'object') {
+		          this.set(data);
+		    		}
+		        else if(typeof data === 'function') {
+		          onSuccess = data;
+
+		          if (typeof onSuccess === 'function')
+		          	onError = onSuccess;
+		        }
+
+		        this.beforeSave();
+		        this.parseFields();
+
+		    		return originalSave.apply(this, arguments).then(onSuccess, onError);
+		    	},
+
+		      parseFields: function () {
+		        var self = this;
+		        _.forOwn(cols, function(fieldType, fieldName) {
+		          var type = fieldType.name || fieldType._name;
+
+		          if (self[fieldName] !== undefined && typeof conversion[type] === 'function') {
+		            self[fieldName] = conversion[type](self[fieldName], fieldType);
+		          }
+		        });
+		        return self;
+		      },
+
+		      beforeSave: function () {}
+		    });
+
+		    return obj;
+		  };
+
+
+		  // wrapParse properties
+		  wrapParse.dateFormat = 'YYYY-MM-DD';
+
+		  return wrapParse;
+		});
 
 		module.run(['$q', '$window', function($q, $window){
 
@@ -109,126 +223,6 @@
 			}
 
 		}]);
-
-
-
-		angular.module('parse-angular.enhance', ['parse-angular'])
-		.run(['$q', '$window', function($q, $window){
-
-
-			if (!angular.isUndefined($window.Parse) && angular.isObject($window.Parse)) {
-
-				var Parse = $window.Parse;
-
-				/// Create a method to easily access our object
-				/// Because Parse.Object("xxxx") is actually creating an object and we can't access static methods
-
-				Parse.Object.getClass = function(className) {
-					return Parse.Object._classMap[className];
-				};
-
-				///// CamelCaseIsh Helper
-				function capitaliseFirstLetter(string) {
-		        return string.charAt(0).toUpperCase() + string.slice(1);
-		    }
-
-
-				///// Override orig extend
-				var origObjectExtend = Parse.Object.extend;
-
-				Parse.Object.extend = function(protoProps) {
-
-					var newClass = origObjectExtend.apply(this, arguments);
-
-					if (Parse._.isObject(protoProps) && Parse._.isArray(protoProps.attrs)) {
-						var attrs = protoProps.attrs;
-						/// Generate setters & getters
-						Parse._.each(attrs, function(currentAttr){
-
-							var field = capitaliseFirstLetter(currentAttr);
-
-							// Don't override if we set a custom setters or getters
-							if(!newClass.prototype['get' + field]) {
-								newClass.prototype['get' + field] = function() {
-									return this.get(currentAttr);
-								};
-							}
-							if(!newClass.prototype['set' + field]) {
-								newClass.prototype['set' + field] = function(data) {
-									this.set(currentAttr, data);
-									return this;
-								}
-							}
-
-						});
-					}
-
-
-					return newClass;
-				}
-
-
-
-				/// Keep references & init collection class map
-				Parse.Collection._classMap = {};
-
-				var origExtend = Parse.Collection.extend;
-
-				/// Enhance Collection 'extend' to store their subclass in a map
-				Parse.Collection.extend = function(opts) {
-
-					var extended = origExtend.apply(this, arguments);
-
-					if (opts && opts.className) {
-						Parse.Collection._classMap[opts.className] = extended;
-					}
-
-					return extended;
-
-				};
-
-
-				Parse.Collection.getClass = function(className) {
-					return Parse.Collection._classMap[className];
-				}
-
-
-				/// Enhance Collection prototype
-				Parse.Collection.prototype = angular.extend(Parse.Collection.prototype, {
-					// Simple paginator
-					loadMore: function(opts) {
-
-						if (!angular.isUndefined(this.query)) {
-
-							// Default Parse limit is 100
-							var currentLimit = this.query._limit == -1 ? 100 : this.query._limit;
-							var currentSkip = this.query._skip;
-
-							currentSkip += currentLimit;
-
-							this.query.skip(currentSkip);
-
-							var _this = this;
-
-							return this.query.find()
-							.then(function(newModels){
-								if (!opts || opts.add !== false) _this.add(newModels)
-								if (newModels.length < currentLimit) _this.hasMoreToLoad = false;
-								return newModels;
-							});
-
-						}
-
-					}
-
-				});
-
-			}
-
-		}]);
-
-
-
 	}
 
 })(this);
