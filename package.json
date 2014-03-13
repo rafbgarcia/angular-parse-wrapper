@@ -1,5 +1,5 @@
 {
-  "name": "parse-angular-patch",
+  "name": "angular-parse-wrapper",
   "version": "0.1.1",
   "description": "Seamless Parse integration with AngularJS",
   "main": "src/parse-angular.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/brandid/parse-angular-patch.git"
+    "url": "https://github.com/rafbgarcia/angular-parse-wrapper.git"
   },
   "keywords": [
     "parse",
@@ -18,15 +18,30 @@
     "collection",
     "objects"
   ],
-  "author": "Nicolas Kermarc <nick@getbrandid.com>",
+  "author": "Nicolas Kermarc <nick@getbrandid.com>, Rafael Garcia",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brandid/parse-angular-patch/issues"
+    "url": "https://github.com/rafbgarcia/angular-parse-wrapper/issues"
   },
-  "homepage": "https://github.com/brandid/parse-angular-patch",
+  "homepage": "https://github.com/rafbgarcia/angular-parse-wrapper",
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-uglify": "~0.2.1",
-    "gulp-jshint": "~1.4.0"
+    "gulp-jshint": "~1.4.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-jasmine": "~0.6.1",
+    "bower": "~1.2.8",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.5",
+    "karma-coffee-preprocessor": "~0.1.3",
+    "requirejs": "~2.1.11",
+    "karma-requirejs": "~0.2.1",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "karma": "~0.10.9",
+    "grunt-karma": "~0.6.2"
   }
 }

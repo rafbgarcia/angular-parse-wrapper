@@ -1,10 +1,16 @@
 {
   "name": "parse-angular-patch",
   "version": "0.1.0",
-  "homepage": "https://github.com/brandid/parse-angular-patch",
+  "homepage": "https://github.com/rafbgarcia/parse-angular-patch",
   "authors": [
-    "@spacenick @arush"
+    "@spacenick @arush @rafbgarcia"
   ],
+  "dependencies": {
+    "momentjs": "~2.0.0",
+    "lodash": "~2.4.1",
+    "angular": "~1.2.12",
+    "angular-mocks": "~1.2.13"
+  },
   "main": "dist/parse-angular.js",
   "description": "A patch for the Parse SDK to make it work natively and seamlessly with AngularJS",
   "keywords": [
