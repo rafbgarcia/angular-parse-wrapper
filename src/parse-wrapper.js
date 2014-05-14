@@ -46,6 +46,8 @@
 
 		    // Define properties
 		    _.forOwn(cols, function(fieldType, fieldName) {
+		    	if(!obj.hasOwnProperty(fieldName)) return;
+
 		      Object.defineProperty(obj.prototype, fieldName, {
 		        enumerable: true,
 		        configurable: false,
