@@ -36,6 +36,10 @@
 		  };
 
 		  wrapParse = function(modelName, cols) {
+        if(typeof modelName === 'function' && modelName._name && modelName._name === 'Relation') {
+          return modelName;
+        }
+
 		    // Parse.Object
 		    var obj;
 		    if(modelName === Parse.User)
@@ -46,8 +50,6 @@
 
 		    // Define properties
 		    _.forOwn(cols, function(fieldType, fieldName) {
-		    	if(!obj.hasOwnProperty(fieldName)) return;
-
 		      Object.defineProperty(obj.prototype, fieldName, {
 		        enumerable: true,
 		        configurable: false,
