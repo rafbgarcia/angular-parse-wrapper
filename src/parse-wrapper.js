@@ -78,21 +78,15 @@
 
 		    var originalSave = Parse.Object.prototype.save;
 		    Parse.Object.prototype = _.extend(Parse.Object.prototype, {
-		    	save: function (data, onSuccess, onError) {
+		    	save: function (data) {
 		    		if(typeof data === 'object') {
 		          this.set(data);
 		    		}
-		        else if(typeof data === 'function') {
-		          onSuccess = data;
-
-		          if (typeof onSuccess === 'function')
-		          	onError = onSuccess;
-		        }
 
 		        this.beforeSave();
 		        this.parseFields();
 
-		    		return originalSave.apply(this, arguments).then(onSuccess, onError);
+		    		return originalSave.apply(this, arguments);
 		    	},
 
 		      parseFields: function () {
