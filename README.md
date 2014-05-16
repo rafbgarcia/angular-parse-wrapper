@@ -16,7 +16,6 @@ II. Use it
 
 
 #### This is your model
-
 ```javascript
     angular.module('Models', ['wrapParse'])
     
@@ -25,7 +24,7 @@ II. Use it
         price: Number,
         weight: Number,
         name: String,
-        inStock: Boolean,
+        in_stock: Boolean,
         company: Company,
         createDate: Date
       });
@@ -36,8 +35,8 @@ II. Use it
 
       return Product;
     })
-
-
+    
+    
     .factory('Company', function(wrapParse) {
       var Company = wrapParse('Product', {
         name: String
@@ -51,9 +50,7 @@ II. Use it
     });
 ```
 
-
 #### This is your controller
-
 ```javascript
     angular.module('Controllers', ['Models'])
 
@@ -86,7 +83,7 @@ II. Use it
         {{product.price}}
         {{product.weight}}
         {{product.name}}
-        {{product.inStock}}
+        {{product.in_stock}}
         {{product.company.name}}
         {{product.createDate}}
       </li>
@@ -94,17 +91,16 @@ II. Use it
 ```
 
 #### new.html
-
 ```html
     <form ng-submit="save()">
       <input type="text" ng-model="product.name">
       <input type="text" ng-model="product.weight">
 
-      <label><input type="radio" value="1" ng-model="product.inStock"> Yes</label>
-      <label><input type="radio" value="0" ng-model="product.inStock"> No</label>
+      <label><input type="radio" value="1" ng-model="product.in_stock"> Yes</label>
+      <label><input type="radio" value="0" ng-model="product.in_stock"> No</label>
       <!-- Or -->
       <label>
-        <input type="checkbox" ng-model="p.interviews_completed"> In stock
+        <input type="checkbox" ng-model="product.in_stock"> In stock
       </label>
 
       <select ng-model="product.company" ng-options="c.id as c.name for c in companies">
