@@ -1,7 +1,7 @@
 Parse Wrapper
 =====================
 
-A wrapper for better using Parse with AngularJs
+A wrapper for better integrating AngularJs and Parse
 
 
 ## Using
