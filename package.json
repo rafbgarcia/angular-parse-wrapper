@@ -3,8 +3,10 @@
   "version": "0.1.1",
   "description": "A wrapper for better integrating AngularJs and Parse",
   "main": "src/parse-wrapper.js",
-  "scripts": {
+  "engines": {
+    "node": "0.10.x"
   },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/rafbgarcia/angular-parse-wrapper.git"
@@ -24,11 +26,12 @@
   },
   "homepage": "https://github.com/rafbgarcia/angular-parse-wrapper",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-karma": "~0.6.2",
     "bower": "~1.2.8",
+    "grunt": "~0.4.2",
+    "grunt-cli": "^0.1.13",
+    "grunt-karma": "~0.6.2",
     "karma": "~0.10.9",
-    "karma-jasmine": "~0.1.5",
-    "karma-chrome-launcher": "~0.1.2"
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-jasmine": "~0.1.5"
   }
 }
