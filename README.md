@@ -9,7 +9,9 @@ A wrapper for better integrating AngularJs and Parse
 I. Include the module in your project
 
 ```javascript
-angular.module('myApp', ['ngAnimate', 'wrapParse']);
+angular.module('myApp', ['Controllers']);
+angular.module('Controllers', ['Models']);
+angular.module('Models', ['wrapParse']);
 ```
 
 II. Use it
@@ -17,7 +19,7 @@ II. Use it
 
 #### This is your model
 ```javascript
-    angular.module('Models', ['wrapParse'])
+    angular.module('Models')
     
     .factory('Product', function(wrapParse, Company) {
       var Product = wrapParse('Product', {
@@ -42,8 +44,8 @@ II. Use it
         name: String
       });
 
-      Company.byName = function(callback) {
-        Company.query().ascending('name').find(callback);
+      Company.byName = function() {
+        Company.query().ascending('name').find().then.apply(this, arguments);
       };
 
       return Company;
@@ -52,7 +54,7 @@ II. Use it
 
 #### This is your controller
 ```javascript
-    angular.module('Controllers', ['Models'])
+    angular.module('Controllers')
 
     .controller('ExampleIndexCtrl', function($scope, Product, $location) {
       Product.find(function(products) {
