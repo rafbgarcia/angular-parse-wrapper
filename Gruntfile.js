@@ -1,20 +1,13 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     karma: {
-      options: {
-        configFile: 'karma.conf.js',
-      },
-      unit: {},
-      travis: {
-        singleRun: true,
-        browsers: ['Firefox']
-      },
+      unit: {
+        configFile: 'karma.conf.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('test', ['karma:unit']);
-
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('test_unit', ['karma']);
 };
