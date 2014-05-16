@@ -8,6 +8,12 @@ A wrapper that integrates Parse with Angular's lifecycle
 
 ## Using
 
+I. Install it
+
+```
+bower install angular-parse-wrapper
+```
+
 I. Include the module in your project
 
 ```javascript
@@ -21,98 +27,98 @@ II. Use it
 
 #### This is your model
 ```javascript
-    angular.module('Models')
-    
-    .factory('Product', function(wrapParse, Company) {
-      var Product = wrapParse('Product', {
-        price: Number,
-        weight: Number,
-        name: String,
-        in_stock: Boolean,
-        company: Company,
-        createDate: Date
-      });
+angular.module('Models')
 
-      Product.prototype.beforeSave = function() {
-        this.createDate = new Date();
-      };
+.factory('Product', function(wrapParse, Company) {
+  var Product = wrapParse('Product', {
+    price: Number,
+    weight: Number,
+    name: String,
+    in_stock: Boolean,
+    company: Company,
+    createDate: Date
+  });
 
-      return Product;
-    })
-    
-    
-    .factory('Company', function(wrapParse) {
-      var Company = wrapParse('Product', {
-        name: String
-      });
+  Product.prototype.beforeSave = function() {
+    this.createDate = new Date();
+  };
 
-      Company.byName = function() {
-        Company.query().ascending('name').find().then.apply(this, arguments);
-      };
+  return Product;
+})
 
-      return Company;
-    });
+
+.factory('Company', function(wrapParse) {
+  var Company = wrapParse('Product', {
+    name: String
+  });
+
+  Company.byName = function() {
+    Company.query().ascending('name').find().then.apply(this, arguments);
+  };
+
+  return Company;
+});
 ```
 
 #### This is your controller
 ```javascript
-    angular.module('Controllers')
+angular.module('Controllers')
 
-    .controller('ExampleIndexCtrl', function($scope, Product, $location) {
-      Product.find(function(products) {
-        $scope.products = products;
-      });
-    })
+.controller('ExampleIndexCtrl', function($scope, Product, $location) {
+  Product.find(function(products) {
+    $scope.products = products;
+  });
+})
 
-    .controller('ExampleNewCtrl', function($scope, $location, Product, Company) {
-      Company.byName(function(companies) {
-        $scope.companies = companies;
-      });
+.controller('ExampleNewCtrl', function($scope, $location, Product, Company) {
+  Company.byName(function(companies) {
+    $scope.companies = companies;
+  });
 
-      $scope.product = new Product();
+  $scope.product = new Product();
 
-      $scope.save = function() {
-        $scope.product.save(function(product) {
-          $location.path('#/products/' + product.id);
-        });
-      }
+  $scope.save = function() {
+    $scope.product.save(function(product) {
+      $location.path('#/products/' + product.id);
     });
+  }
+});
 ```
 
 #### index.html
 
 ```html
-    <ul>
-      <li ng-repeat="product in products">
-        {{product.price}}
-        {{product.weight}}
-        {{product.name}}
-        {{product.in_stock}}
-        {{product.company.name}}
-        {{product.createDate}}
-      </li>
-    </ul>
+<ul>
+  <li ng-repeat="product in products">
+    {{product.price}}
+    {{product.weight}}
+    {{product.name}}
+    {{product.in_stock}}
+    {{product.company.name}}
+    {{product.createDate}}
+  </li>
+</ul>
 ```
 
 #### new.html
 ```html
-    <form ng-submit="save()">
-      <input type="text" ng-model="product.name">
-      <input type="text" ng-model="product.weight">
+<form ng-submit="save()">
+  <input type="text" ng-model="product.name">
+  <input type="text" ng-model="product.weight">
 
-      <label><input type="radio" value="1" ng-model="product.in_stock"> Yes</label>
-      <label><input type="radio" value="0" ng-model="product.in_stock"> No</label>
-      <!-- Or -->
-      <label>
-        <input type="checkbox" ng-model="product.in_stock"> In stock
-      </label>
+  <label><input type="radio" value="1" ng-model="product.in_stock"> Yes</label>
+  <label><input type="radio" value="0" ng-model="product.in_stock"> No</label>
+  <!-- Or -->
+  <label>
+    <input type="checkbox" ng-model="product.in_stock"> In stock
+  </label>
 
-      <select ng-model="product.company" ng-options="c.id as c.name for c in companies">
-        <option value="">- Choose -</option>
-      </select>
+  <select ng-model="product.company" ng-options="c.id as c.name for c in companies">
+    <option value="">- Choose -</option>
+  </select>
 
-      <button type="submit">Save</button>
-    </form>
+  <button type="submit">Save</button>
+</form>
 ```
 
 
