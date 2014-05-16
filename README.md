@@ -20,7 +20,7 @@ A wrapper for better using Parse with AngularJs
         createDate: Date
       });
 
-      Product.prototype._beforeSave = function() {
+      Product.prototype.beforeSave = function() {
         this.createDate = new Date();
       };
 
@@ -34,7 +34,7 @@ A wrapper for better using Parse with AngularJs
       });
 
       Company.byName = function(callback) {
-        Company._query().ascending('name')._find(callback);
+        Company.query().ascending('name').find(callback);
       };
 
       return Company;
@@ -49,7 +49,7 @@ A wrapper for better using Parse with AngularJs
     angular.module('Controllers', ['Models'])
 
     .controller('ExampleIndexCtrl', function($scope, Product, $location) {
-      Product._find(function(products) {
+      Product.find(function(products) {
         $scope.products = products;
       });
     })
@@ -62,7 +62,7 @@ A wrapper for better using Parse with AngularJs
       $scope.product = new Product();
 
       $scope.save = function() {
-        $scope.product._save(function(product) {
+        $scope.product.save(function(product) {
           $location.path('#/products/' + product.id);
         });
       }
