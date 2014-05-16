@@ -3,7 +3,7 @@
 Parse Wrapper
 =====================
 
-A wrapper that integrates Parse with Angular's lifecycle
+A wrapper that integrates Parse with Angular's lifecycle.
 
 
 ## Using
@@ -19,11 +19,13 @@ I. Include the module in your project
 ```javascript
 angular.module('myApp', ['Controllers']);
 angular.module('Controllers', ['Models']);
-angular.module('Models', ['wrapParse']);
+angular.module('Models', ['wrapParse']); // At this point Parse is already integrated with Angular's lifecycle.
 ```
 
-II. Use it
+II. Use it.
 
+
+## Bind your Object's properties directly with your views, using the same name as your columns
 
 #### This is your model
 ```javascript
