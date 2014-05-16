@@ -1,3 +1,5 @@
+[![Build Status](https://snap-ci.com/rafbgarcia/angular-parse-wrapper/branch/master/build_image)](https://snap-ci.com/rafbgarcia/angular-parse-wrapper/branch/master)
+
 Parse Wrapper
 =====================
 
