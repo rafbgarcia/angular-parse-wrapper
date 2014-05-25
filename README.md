@@ -38,11 +38,12 @@ angular.module('Models')
     name: String,
     in_stock: Boolean,
     company: Company,
-    createDate: Date
+    date: Date,
+    available: {type: Boolean, default: true}
   });
 
   Product.prototype.beforeSave = function() {
-    this.createDate = new Date();
+    // some awesome logic
   };
 
   return Product;
@@ -97,7 +98,8 @@ angular.module('Controllers')
     {{product.name}}
     {{product.in_stock}}
     {{product.company.name}}
-    {{product.createDate}}
+    {{product.date}}
+    {{product.available ? 'Yes' : 'No'}}
   </li>
 </ul>
 ```
