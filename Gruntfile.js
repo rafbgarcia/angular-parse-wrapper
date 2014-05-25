@@ -3,6 +3,10 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: 'karma.conf.js'
+      },
+      watch: {
+        configFile: 'karma.conf.js',
+        singleRun: false
       }
     },
 
@@ -30,4 +34,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('test_unit', ['karma']);
+  grunt.registerTask('watch_test_unit', ['karma:watch']);
 };
