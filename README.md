@@ -25,7 +25,7 @@ angular.module('Models', ['wrapParse']); // At this point Parse is already integ
 II. Use it.
 
 
-## Bind your Object's properties directly with your views, using the same name as your columns
+## Bind your Object's properties directly with your views
 
 #### This is your model
 ```javascript
