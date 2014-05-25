@@ -25,7 +25,8 @@ describe('Wrap Parse', function() {
       name: String,
       inStock: Boolean,
       company: Company,
-      createDate: Date
+      createDate: Date,
+      available: {type: Boolean, default: true}
     });
 
     product = new Product({
@@ -74,6 +75,10 @@ describe('Wrap Parse', function() {
 
       expect(product.inStock).toBe(true);
     });
+  });
+
+  it('accepts default value', function() {
+    expect(product.available).toEqual(true);
   });
 
   describe('Parse.Object', function() {

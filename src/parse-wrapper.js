@@ -40,7 +40,6 @@
           return modelName;
         }
 
-		    // Parse.Object
 		    var obj;
 		    if(modelName === Parse.User)
 		      obj = modelName;
@@ -50,11 +49,19 @@
 
 		    // Define properties
 		    _.forOwn(cols, function(fieldType, fieldName) {
+		    	var defaultValue;
+		    	if(typeof fieldType === 'object') {
+		    		defaultValue = fieldType.default;
+		    		fieldType = fieldType.type;
+		    	}
+
 		      Object.defineProperty(obj.prototype, fieldName, {
 		        enumerable: true,
 		        configurable: false,
 		        get: function() {
 		          var value = this.get(fieldName);
+		          value = value === undefined ? defaultValue : value;
+
 		          if(value !== undefined && fieldType.name === 'Boolean')
 		            return conversion['Boolean'](value);
 		          return value;
