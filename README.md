@@ -3,7 +3,7 @@
 Parse Wrapper
 =====================
 
-A wrapper that integrates Parse with Angular's lifecycle.
+Integrates Parse into Angular's lifecycle.
 
 
 ## Using
