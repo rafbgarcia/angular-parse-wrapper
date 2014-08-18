@@ -14,7 +14,7 @@ I. Install it
 bower install angular-parse-wrapper
 ```
 
-I. Include the module in your project
+II. Include the module in your project
 
 ```javascript
 angular.module('myApp', ['Controllers']);
@@ -22,7 +22,7 @@ angular.module('Controllers', ['Models']);
 angular.module('Models', ['wrapParse']); // At this point Parse is already integrated with Angular's lifecycle.
 ```
 
-II. Use it.
+III. Use it.
 
 
 ## Bind your Object's properties directly with your views
