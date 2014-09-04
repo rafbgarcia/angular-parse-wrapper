@@ -16,7 +16,7 @@
     "angular": "~1.2.12",
     "angular-mocks": "~1.2.13"
   },
-  "main": "dist/angular-parse-wrapper.js",
+  "main": "dist/angular-parse-wrapper.min.js",
   "description": "A wrapper that integrates Parse with Angular's lifecycle",
   "keywords": [
     "parse",
