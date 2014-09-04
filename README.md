@@ -51,7 +51,7 @@ angular.module('Models')
 
 
 .factory('Company', function(wrapParse) {
-  var Company = wrapParse('Product', {
+  var Company = wrapParse('Company', {
     name: String
   });
 
