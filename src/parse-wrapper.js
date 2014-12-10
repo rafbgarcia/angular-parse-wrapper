@@ -51,7 +51,7 @@
 		    _.forOwn(cols, function(fieldType, fieldName) {
 		    	var defaultValue;
 		    	if(typeof fieldType === 'object') {
-		    		defaultValue = fieldType.default;
+		    		defaultValue = fieldType['default'] || fieldType.defaultVal;
 		    		fieldType = fieldType.type;
 		    	}
 

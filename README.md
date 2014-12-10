@@ -39,7 +39,7 @@ angular.module('Models')
     in_stock: Boolean,
     company: Company,
     date: Date,
-    available: {type: Boolean, default: true}
+    available: {type: Boolean, 'default': true} //defaultVal also works
   });
 
   Product.prototype.beforeSave = function() {
