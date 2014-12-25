@@ -19,14 +19,7 @@
 		      return Boolean(Number(value));
 		    },
 		    'Date': function(value) {
-		      if(value instanceof Date) {
-		        var newDate = new Date(value.valueOf() + value.getTimezoneOffset() * 60000);
-		        newDate.setSeconds(0);
-		        newDate.setMinutes(0);
-		        newDate.setHours(0);
-		        return newDate;
-		      }
-		      return moment(value, wrapParse.dateFormat).toDate();
+		      return (value instanceof Date) ? value : moment(value, wrapParse.dateFormat).toDate();
 		    },
 		    'Relation': function(value, fieldType) {
 		      if(value instanceof fieldType)
