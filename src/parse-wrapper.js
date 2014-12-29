@@ -53,7 +53,15 @@
 		        configurable: false,
 		        get: function() {
 		          var value = this.get(fieldName);
-		          value = value === undefined ? defaultValue : value;
+		          if(value === undefined){
+		            //when defaultVal is needed, give this model its own copy.
+		            //this matters if defaultVal is a js object or array that can be changed
+		            //subsequently by the client, we don't want the changes to be applied to
+		            //the one copy of defaultVal that's shared with other models of the wrapped class.
+		            this.parseWrapperDefaults = this.parseWrapperDefaults || {};
+		            if(!_.has(this.parseWrapperDefaults, fieldName)) this.parseWrapperDefaults[fieldName] = _.clone(defaultValue);
+		            value = this.parseWrapperDefaults[fieldName];
+		          }
 
 		          if(value !== undefined && fieldType.name === 'Boolean')
 		            return conversion['Boolean'](value);
