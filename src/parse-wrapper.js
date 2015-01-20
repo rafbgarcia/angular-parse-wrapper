@@ -95,15 +95,16 @@
 		          this.set(data);
 		    		}
 
-		        this.beforeSave();
-		        this.parseFields();
+		        this.beforeSave.apply(this, arguments);
+		        this.parseFields(data);
 
 		    		return originalSave.apply(this, arguments);
 		    	},
 
-		      parseFields: function () {
+		      parseFields: function (data) {
 		        var self = this;
-		        _.forOwn(cols, function(fieldType, fieldName) {
+		        var fields = _.isEmpty(data) ? _.pick(cols, this.dirtyKeys()) : _.pick(cols, _.keys(data));
+		        _.forOwn(fields, function(fieldType, fieldName) {
 		          var type = fieldType.name || fieldType._name;
 
 		          if (self[fieldName] !== undefined && typeof conversion[type] === 'function') {
