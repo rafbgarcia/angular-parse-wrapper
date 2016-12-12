@@ -17,7 +17,10 @@ describe('Wrap Parse', function() {
       inStock: Boolean,
       company: Company,
       createDate: Date,
-      available: {type: Boolean, default: true}
+      available: {
+        type: Boolean,
+        default: true
+      }
     });
 
     product = new Product({
@@ -42,7 +45,10 @@ describe('Wrap Parse', function() {
       password: String
     });
 
-    var user = new User({username: 'test', password: '1234'});
+    var user = new User({
+      username: 'test',
+      password: '1234'
+    });
 
     expect(user.username).toBe('test');
     expect(user.password).toBe('1234');
@@ -81,8 +87,9 @@ describe('Wrap Parse', function() {
       $rootScope = _$rootScope_;
 
       $rootScope.product = product;
-      $rootScope.$apply(function () {
-        element = $compile('<input ng-model="product.price" type="text">')($rootScope);
+      $rootScope.$apply(function() {
+        element = $compile('<input ng-model="product.price" type="text">')(
+          $rootScope);
       });
     }));
 
@@ -120,7 +127,11 @@ describe('Wrap Parse', function() {
       it('executes beforeSave hook', function() {
         spyOn(product, 'beforeSave');
 
-        product.save();
+        var prod = product.save().then(function(prod) {
+          debugger;
+        }, function(err) {
+          debugger;
+        });
 
         expect(product.beforeSave).toHaveBeenCalled();
       });
@@ -133,7 +144,8 @@ describe('Wrap Parse', function() {
         var id = '3ax44wef';
         Product.get(id);
 
-        expect(Parse.Query.prototype.get).toHaveBeenCalledWith(id, undefined, undefined);
+        expect(Parse.Query.prototype.get).toHaveBeenCalledWith(id, undefined,
+          undefined);
       });
     });
   });
@@ -260,7 +272,9 @@ describe('Wrap Parse', function() {
       });
 
       it('keeps the Relation value', function() {
-        product.company = new Company({id: companyId})
+        product.company = new Company({
+          id: companyId
+        })
 
         product.parseFields();
 
